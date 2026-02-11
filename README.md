@@ -62,40 +62,246 @@ flowchart TD
     D --> F["退款到账"]
 ```
 
-## 安装
+## 安装与使用
+
+先克隆仓库：
+
+```bash
+git clone https://github.com/dongtz/bizflow_skill.git
+cd bizflow_skill
+```
+
+---
 
 ### Cursor
+
+<details>
+<summary><b>安装方法</b></summary>
+
+将 `bizflow/` 目录复制到 Cursor 的个人 skills 目录：
 
 ```bash
 cp -r bizflow/ ~/.cursor/skills/bizflow/
 ```
 
+安装后 Cursor 会自动发现该 Skill，无需重启。
+
+</details>
+
+<details>
+<summary><b>使用方法</b></summary>
+
+在 Cursor 的 AI 对话框（`Cmd+L` 或 `Cmd+I`）中：
+
+**方式一：直接说主题**
+```
+帮我梳理「会员续费退款流程」
+```
+
+**方式二：带着材料一起说**
+```
+帮我梳理退款流程，下面是聊天记录：
+
+张三：退款需要走审批吗
+李四：金额超过500要主管审批
+...
+```
+
+**方式三：用 `@` 引用文件**
+```
+帮我梳理退款流程，材料在 @退款讨论.md 和 @会议纪要0210.md
+```
+
+AI 初始化后会输出使用说明卡片，然后按提示操作：
+1. 粘贴材料（可多次）
+2. 说"提炼流程"
+3. 说"生成确认清单"
+4. 说"生成 BRD"
+
+每一步完成后 AI 都会提示下一步该做什么。
+
+</details>
+
+---
+
 ### Claude Code
+
+<details>
+<summary><b>安装方法</b></summary>
+
+将 `bizflow/` 目录复制到 Claude Code 的个人 skills 目录：
 
 ```bash
 cp -r bizflow/ ~/.claude/skills/bizflow/
 ```
 
-### 其他 AI 工具
+安装后 Claude Code 会自动发现该 Skill，无需重启。
 
-将 `bizflow/SKILL.md` 的内容粘贴到工具的 Custom Instructions 或 System Prompt 中。如果工具支持多文件，也将 `bizflow/references/` 下的 4 个工作流文件一并导入。
+</details>
 
-## 快速开始
+<details>
+<summary><b>使用方法</b></summary>
 
-安装后，在 AI 对话中说：
+在 Claude Code 终端中：
 
+**启动**
 ```
 帮我梳理「会员续费退款流程」
 ```
 
-AI 会自动初始化项目并输出使用说明。然后你只需要：
+**追加材料**（支持多次，混着贴）
+```
+追加这些材料：
 
-1. **粘贴材料** — 把聊天记录/会议纪要/文档直接贴过来
-2. **说"提炼流程"** — AI 生成流程骨架 + 需确认的问题
-3. **说"生成确认清单"** — 拿到可直接发给业务方的 IM 消息
-4. **说"生成 BRD"** — 一键产出最终文档
+（直接粘贴飞书聊天记录 / 会议纪要 / Markdown 文档）
+```
 
-每一步完成后 AI 都会提示你下一步该做什么。
+**后续步骤**（按 AI 提示依次执行）
+```
+提炼流程
+```
+```
+生成确认清单
+```
+```
+生成 BRD
+```
+
+Claude Code 也可以用 `@` 引用本地文件作为材料输入。
+
+</details>
+
+---
+
+### Kimi Code CLI
+
+<details>
+<summary><b>安装方法</b></summary>
+
+Kimi Code CLI 原生支持 SKILL.md 格式。将 `bizflow/` 目录复制到以下任一路径（按优先级排列）：
+
+```bash
+# 推荐：使用 ~/.kimi/skills/ 目录
+cp -r bizflow/ ~/.kimi/skills/bizflow/
+```
+
+其他可选路径（Kimi 也会自动扫描）：
+```bash
+# 如果你同时使用 Claude Code，共用同一份即可
+cp -r bizflow/ ~/.claude/skills/bizflow/
+```
+
+也可以通过 `--skills-dir` 参数指定自定义路径：
+```bash
+kimi --skills-dir /path/to/my-skills
+```
+
+安装后 Kimi 启动时会自动发现并注入该 Skill。
+
+</details>
+
+<details>
+<summary><b>使用方法</b></summary>
+
+在 Kimi Code CLI 中：
+
+**启动**
+```
+帮我梳理「会员续费退款流程」
+```
+
+**追加材料**
+```
+追加这些材料：
+
+（粘贴聊天记录 / 文档内容）
+```
+
+**后续步骤**
+```
+提炼流程
+```
+```
+生成确认清单
+```
+```
+生成 BRD
+```
+
+使用流程与 Claude Code 完全一致。
+
+</details>
+
+---
+
+### 其他 AI 工具（ChatGPT / Gemini / 通义 / 豆包等）
+
+<details>
+<summary><b>安装方法</b></summary>
+
+这些工具不支持 SKILL.md 文件格式，需要手动配置。
+
+**方式一：Custom Instructions / System Prompt**
+
+将 `bizflow/SKILL.md` 的**全部内容**（去掉开头的 YAML frontmatter `---...---`）粘贴到工具的：
+- ChatGPT → Settings → Custom Instructions → "How would you like ChatGPT to respond?"
+- Gemini → Gems → 创建新 Gem → Instructions
+- 通义千问 → 我的助手 → 创建助手 → 系统提示词
+- 豆包 → 创建智能体 → 系统提示词
+
+**方式二：对话开头粘贴（无需配置）**
+
+每次新对话时，先发送：
+```
+请严格按照以下 Skill 指令工作：
+
+（粘贴 SKILL.md 全部内容）
+```
+然后正常使用。
+
+> 注意：由于这些工具不支持文件读写，AI 会直接在对话中输出文档内容而非写入文件。你需要手动复制保存。
+
+</details>
+
+<details>
+<summary><b>使用方法</b></summary>
+
+**第 1 轮：启动 + 粘贴材料**
+```
+主题是「会员续费退款流程」，下面是原始材料：
+
+（粘贴聊天记录 / 会议纪要 / 文档内容）
+```
+
+**第 2 轮：提炼流程**
+```
+提炼流程
+```
+
+**第 3 轮：生成确认清单**
+```
+生成确认清单
+```
+
+**第 4 轮：生成最终文档**
+```
+生成 BRD
+```
+
+每一步 AI 都会提示下一步操作。如果需要追加材料，说"追加材料"然后粘贴新内容。
+
+</details>
+
+---
+
+### 安装方式速查
+
+| 工具 | 安装命令 / 方式 | Skill 自动发现 | 文件读写 |
+|------|----------------|:-----------:|:------:|
+| **Cursor** | `cp -r bizflow/ ~/.cursor/skills/bizflow/` | ✅ | ✅ |
+| **Claude Code** | `cp -r bizflow/ ~/.claude/skills/bizflow/` | ✅ | ✅ |
+| **Kimi Code CLI** | `cp -r bizflow/ ~/.kimi/skills/bizflow/` | ✅ | ✅ |
+| **ChatGPT / Gemini 等** | 粘贴 SKILL.md 到 Custom Instructions | ❌ 手动 | ❌ 对话输出 |
 
 ## Skill 文件结构
 
