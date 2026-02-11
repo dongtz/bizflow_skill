@@ -30,7 +30,8 @@ description: 产品经理业务流程梳理助手。将 IM 聊天记录、会议
 │   └── sources.md          # 合规/规范/口径引用来源
 ├── outputs/
 │   ├── 01_process.md       # 业务流程文档
-│   └── 02_brd.md           # 业务需求文档（BRD）
+│   ├── 02_brd.md           # 业务需求文档（BRD）
+│   └── 03_confirm.md       # 确认清单（IM 消息稿 + 结构化清单）
 └── decisions.md            # 决策日志 + 未决项追溯
 ```
 
@@ -184,10 +185,10 @@ description: 产品经理业务流程梳理助手。将 IM 聊天记录、会议
 **详细流程参见 [references/confirm-workflow.md](references/confirm-workflow.md)**
 
 核心要点：
-- 产出"可直接复制发送的 IM 消息稿"
+- 生成 `outputs/03_confirm.md`，包含 IM 消息稿 + 结构化确认清单
 - 每条用 #1~#N 编号，给出回复示例（如"#2 选B""#5 是"）
-- 同时产出结构化确认清单（含风险、依据 EntryId、建议确认人）
-- 写入 `decisions.md`
+- 结构化清单含：回复方式、风险、来源依据、建议确认人
+- 同时在 `decisions.md` 追加记录
 
 ### 步骤 5：生成文档 (Run)
 
